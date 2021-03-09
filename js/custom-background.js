@@ -3,30 +3,12 @@ const displayMediaOptions = {
   audio: true,
 };
 
-const audioCtx = new AudioContext();
-const destination = audioCtx.createMediaStreamDestination();
-var output = new MediaStream();
-var micsource;
-var syssource;
-//var mediaRecorder = '';
-var mediaConstraints;
-var micstream;
-var audiodevices = [];
-var cancel = false;
 var recording = false;
 var tabid = 0;
 var maintabs = [];
-var camtabs = [];
-var recording_type = "tab-only";
-var pushtotalk;
-var newwindow = null;
-var micable = true;
-var width = 1920;
-var height = 1080;
 var quality = "max";
 var camerasize = "small-size";
 var camerapos = {x:"10px", y:"10px"};
-var isMac = navigator.platform.toUpperCase().indexOf('MAC')>=0;
 
 const chunks = [];
 let mediaRecorder = null;
@@ -43,23 +25,6 @@ chrome.runtime.onInstalled.addListener(function() {
       mic: 0,
       type: "tab-only",
       quality: "max"
-  });
-  
-  // Inject content scripts in existing tabs
-  chrome.tabs.query({currentWindow: true}, function gotTabs(tabs){
-      for (let index = 0; index < tabs.length; index++) {
-          if (!tabs[index].url.includes("chrome://") && !tabs[index].url.includes("chrome.com")) {
-              chrome.tabs.executeScript(tabs[index].id, {
-                  file: './js/detect.js'
-              })
-          }
-      }
-  });
-});
-
-chrome.browserAction.onClicked.addListener(function (tab) {
-  chrome.tabs.executeScript(tab.ib, {
-    file: 'src/initialiseExtension.js'
   });
 });
 
