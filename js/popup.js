@@ -45,12 +45,14 @@ $(document).ready(function(){
     // Start recording
     function record(){
         if (!recording) {
-            chrome.runtime.sendMessage({type: "record"});
+            //chrome.runtime.sendMessage({type: "record"});
+            chrome.runtime.sendMessage({action: "startRecording"});
             $("#record").html(chrome.i18n.getMessage("starting_recording"));
         } else {
             recording = false;
             $("#record").html(chrome.i18n.getMessage("start_recording"));
-            chrome.runtime.sendMessage({type: "stop-save"}); 
+            //chrome.runtime.sendMessage({type: "stop-save"}); 
+            chrome.runtime.sendMessage({action: "stopRecording"});
         }
     }
     

@@ -30,6 +30,28 @@ $(document).ready(function(){
     var lasty = 0;
     var lastscrollx = 0;
     var lastscrolly = 0;
+
+    const downloadFromUrl = (url) => {
+      try {
+        const x = new XMLHttpRequest();
+        x.open('GET', url);
+        x.responseType = 'blob';
+        x.onload = function () {
+          const url = URL.createObjectURL(x.response);
+          
+          const a = document.createElement('a');
+          document.body.appendChild(a);
+          a.style = 'display: none';
+          a.href = url;
+          a.download = 'test.webm';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        };
+        x.send();
+      } catch (e) {
+        console.log('Failed to download blobURL', e);
+      }
+    }
     
     // Get defaults
     function getDefaults() {
@@ -510,7 +532,12 @@ $(document).ready(function(){
     
     // Stop and save the recording
     function saveRecording(){
-        chrome.runtime.sendMessage({type: "stop-save"}); 
+        //chrome.runtime.sendMessage({type: "stop-save"}); 
+        chrome.runtime.sendMessage({action: "stopRecording"}, response => {
+          console.log('Recieved URL: ', response.url);
+          downloadFromUrl(response.url)
+        }); 
+
     }
     
     // Stop and discard the recording
