@@ -28,6 +28,13 @@ chrome.runtime.onInstalled.addListener(function() {
   });
 });
 
+// chrome.browserAction.onClicked.addListener(function (tab) {
+//   console.log('Executing script: initialiseExtension')
+//   chrome.tabs.executeScript(tab.ib, {
+//     file: 'js/initialiseExtension.js'
+//   });
+// });
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.action === 'testAction') {
     console.log('test success!')
@@ -151,6 +158,9 @@ function injectContent(start) {
               chrome.tabs.executeScript(tab.id, {
                   file: './js/libraries/arrow.js'
               });
+              chrome.tabs.executeScript(tab.id, {
+                file: './js/initialiseExtension.js'
+              });
 
               // Check if it's a new or ongoing recording
               if (start) {
@@ -176,6 +186,9 @@ function injectContent(start) {
               })
               chrome.tabs.insertCSS(tab.id, {
                   file: './css/libraries/pickr.css'
+              })
+              chrome.tabs.insertCSS(tab.id, {
+                file: './css/screen-recorder.css'
               })
               maintabs.push(tab.id);
           } else {
